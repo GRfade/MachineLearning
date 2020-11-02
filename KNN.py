@@ -106,9 +106,9 @@ def classifyKNN(trainData, testData, k):
         dict = {'tested_positive':0,'tested_negative':0}
         for i in min:
             if trainData[i][-1] == b'tested_positive' :
-                dict['tested_negative'] = dict['tested_negative'] + 1
-            else :
                 dict['tested_positive'] = dict['tested_positive'] + 1
+            else :
+                dict['tested_negative'] = dict['tested_negative'] + 1
             # print(dict)
 
         if dict['tested_positive'] > dict['tested_negative'] : #判断患有糖尿病
