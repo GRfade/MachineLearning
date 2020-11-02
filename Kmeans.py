@@ -13,6 +13,7 @@ Sex Length	Diam	Height	Whole	Shucked	Viscera	Shell	Rings 这些数据
 3.输出图形化数据
 """
 
+
 def readingDatas():
     # 打开文件，读取数据，改变格式为列表,去除第一列数据，该列数据不适合做Kmeans算法
     #传入数据：无
