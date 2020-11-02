@@ -1,10 +1,11 @@
-import math
-import matplotlib.pyplot as plt
-import random
-import numpy as np
-import pandas as pd
+import math  #数学基本运算
+import matplotlib.pyplot as plt #图形显示
+import random  #随机数
+import numpy as np #矩阵运算库
+import pandas as pd #提供高性能易用数据类型和分析工具
 
 """
+本算法调用数据为 abalone.data文件
 1.先将文件数据读取，转换为列表，列表内每一项为列表，包括
 Sex Length	Diam	Height	Whole	Shucked	Viscera	Shell	Rings 这些数据
 
