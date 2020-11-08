@@ -15,26 +15,117 @@ import sys #用于表示最大值和最小值
 '''
 def readingDatas():
     '''
-    该函数利用pandas库导入data文件数据，转换为DataFrame数据结构
-    :return:返回data列表  pandas.core.frame.DataFrame
+    该函数利用pandas库导入data文件数据，并添加新的一列constant数据值为1，并将原第一列离散数据转换为数值
+    转换方法为：对于同等地位的离散变量采取编码方式如'M', '1 0 0'，'I', '0 1 0'，'F', '0 0 1'
+    这样就把一维id数据拓宽到三维从而解决了离散数据的问题
+    最后将dataframe结构转换为list结构
+    :return:dataSet list列表
     '''
-    dataSet = pd.read_csv("./Dataset/abalone.data",header=None)
-    dataSet.columns = ["Sex", "Length", "Diameter", "Height",
+    df = pd.read_csv("./Dataset/abalone.data",header=None)
+    df.columns = ["Sex", "Length", "Diameter", "Height",
                   "Whole weight", "Shucked weight", "Viscera weight",
                   "Shell weight","Rings"]
-    dataSet.insert(0, 'constant', 1)
+
+    df.insert(0, 'constant', 1)  #添加constant列 值恒为1
+    df = df.replace('M', '1 0 0')  #对sex列的数据进行连续化处理
+    df = df.replace('I', '0 1 0')
+    df = df.replace('F', '0 0 1')
+    df['Sex1'] = df['Sex'].map(lambda x:x.split(' ')[0])
+    df['Sex2'] = df['Sex'].map(lambda x:x.split(' ')[1])
+    df['Sex3'] = df['Sex'].map(lambda x:x.split(' ')[2])
+    df = df.drop(['Sex'], axis=1)   # 删除Sex列
+    # print(df)
+    columns = list(df)
+    # print(columns)
+    columns.insert(1,columns.pop(columns.index('Sex1')))
+    columns.insert(2, columns.pop(columns.index('Sex2')))
+    columns.insert(3, columns.pop(columns.index('Sex3')))
+    # print(columns)
+    df = df.loc[:, columns]
+    df = df.replace('1', 1)
+    df = df.replace('0', 0)
+
+    dataSet = np.array(df).tolist()
+    # print(dataSet)
     return dataSet
 
 
 def randomData(dataSet,rate):
     '''
     将数据随机分为训练数据和测试数据
-    :param dataSet:
+    :param dataSet:数据集
+    :param rate:比率
+    :return: trainingSet,testSet
+    '''
+    datasetDemo = dataSet[:] #将数据存入另一个列表防止列表修改
+    num = len(datasetDemo)
+    trainNum = int(rate*num)
+    np.random.shuffle(datasetDemo) #将列表随机乱序
+    trainData = datasetDemo[0:trainNum] #随机选取80%的数据成为分类数据
+    testData = datasetDemo[trainNum:num] #剩下的为测试数据
+    return trainData,testData
+
+
+def  gradientDescent(trainData,rate):
+    '''
+    梯度下降优化算法，该函数为一轮迭代过程
+    :param trainDataNoLabel:
     :param rate:
     :return:
     '''
+    coefficient = [1,1,1,1,1,1,1,1,1,1,1]  # 系数列表初始化
+    coefficientDemo = coefficient[:]
+    for index,num in enumerate(coefficient):  # 循环完毕就是一轮迭代
+        sum = 0
+        for data in trainData:
+            sum += ( hypothesisFunction(data,coefficient) - data[-1] ) * data[index]
+
+        sum = sum * rate / len(trainData)
+        coefficientDemo[index] = num - sum
+    coefficient = coefficientDemo[:]
+    return coefficient
 
 
+def hypothesisFunction(data,coefficient):
+    '''
+    该函数为假设函数，即拟合的直线函数 h(x) = θ_0x_0 + θ_1x_1 + ... + θ_nx_n
+    :param data: 输入的数据
+    :param coefficient: 线性回归系数
+    :return: result 目标值
+    '''
+    data = data[:-1]
+    a = np.array(data)
+    b = np.array(coefficient)
+    result = np.dot(a,b)
+
+    return result
+
+
+def trainLinear(trainData,rate):
+    '''
+    训练线性回归算法，获得最小代价函数，利用梯度下降算法,进行n轮迭代
+    :param trainDate:测试数据
+    :param rate:学习率(0~1)
+    :return:coefficient 回归系数
+    '''
+    print("linearRegression")
+    coefficient = []  # 系数列表初始化
+    iteration = 10
+    while iteration > 0 : #总迭代次数
+        coefficient = gradientDescent(trainData,rate)
+        iteration = iteration - 1
+    return coefficient
+
+
+
+def Testlinea(testData,coefficient):
+    '''
+    测试算法，利用迭代得到的回归系数，进行测试，并绘制图像
+    :param testData:
+    :param coefficient:
+    :return:
+    '''
+    print(Testlinea)
 
 
 def testLinear():
@@ -42,9 +133,18 @@ def testLinear():
     测试线性回归算法
     '''
     dataSet = readingDatas()
-    print(dataSet)
+    trainData,testData = randomData(dataSet,0.8) #获取训练数据和测试数据
+    coefficient = trainLinear(trainData,1)
+    print(coefficient)
 
 
 
 if __name__ == "__main__":
     testLinear()
+
+
+
+
+
+
+
