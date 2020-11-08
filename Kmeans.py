@@ -1,8 +1,8 @@
-import math  #数学基本运算
+# import math  #数学基本运算
 import matplotlib.pyplot as plt #图形显示
 import random  #随机数
 import numpy as np #矩阵运算库
-import pandas as pd #提供高性能易用数据类型和分析工具
+# import pandas as pd #提供高性能易用数据类型和分析工具
 
 """
 本算法调用数据为 abalone.data文件
