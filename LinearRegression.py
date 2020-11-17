@@ -46,6 +46,8 @@ def readingDatas():
     df = df.replace('0', 0)
 
     dataSet = np.array(df).tolist()
+    for data in dataSet:
+        data[-1] = data[-1] + 1.5
     # print(dataSet)
     return dataSet
 
@@ -59,27 +61,25 @@ def randomData(dataSet,rate):
     '''
     datasetDemo = dataSet[:] #将数据存入另一个列表防止列表修改
     num = len(datasetDemo)
-    trainNum = int(rate*num)
+    trainNum = int(rate * num)
     np.random.shuffle(datasetDemo) #将列表随机乱序
     trainData = datasetDemo[0:trainNum] #随机选取80%的数据成为分类数据
     testData = datasetDemo[trainNum:num] #剩下的为测试数据
     return trainData,testData
 
 
-def  gradientDescent(trainData,rate):
+def  gradientDescent(trainData,rate,coefficient):
     '''
     梯度下降优化算法，该函数为一轮迭代过程
     :param trainDataNoLabel:
     :param rate:
     :return:
     '''
-    coefficient = [1,1,1,1,1,1,1,1,1,1,1]  # 系数列表初始化
     coefficientDemo = coefficient[:]
     for index,num in enumerate(coefficient):  # 循环完毕就是一轮迭代
         sum = 0
         for data in trainData:
             sum += ( hypothesisFunction(data,coefficient) - data[-1] ) * data[index]
-
         sum = sum * rate / len(trainData)
         coefficientDemo[index] = num - sum
     coefficient = coefficientDemo[:]
@@ -94,9 +94,9 @@ def hypothesisFunction(data,coefficient):
     :return: result 目标值
     '''
     data = data[:-1]
-    a = np.array(data)
-    b = np.array(coefficient)
-    result = np.dot(a,b)
+    vec1 = np.array(data)
+    vec2 = np.array(coefficient)
+    result = np.dot(vec1,vec2)
 
     return result
 
@@ -109,14 +109,24 @@ def trainLinear(trainData,rate):
     :return:coefficient 回归系数
     '''
     print("linearRegression")
-    coefficient = []  # 系数列表初始化
-    iteration = 10
-    while iteration > 0 : #总迭代次数
-        coefficient = gradientDescent(trainData,rate)
-        iteration = iteration - 1
+    coefficient = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]  # 系数列表初始化
+    oldCost = 0.0
+    newCost = costFunction(trainData, coefficient)
+    while abs(oldCost - newCost) > 0.01 : #总迭代次数
+        coefficient = gradientDescent(trainData,rate,coefficient)
+        oldCost = newCost
+        newCost = costFunction(trainData, coefficient)
+        print('代价函数值为：',newCost)
+
     return coefficient
 
 
+def costFunction(trainData,coefficient):
+    cost = 0
+    for data in trainData:
+        cost += np.square(hypothesisFunction(data, coefficient) - data[-1])
+    cost = cost / (len(trainData)*2)
+    return cost
 
 def Testlinea(testData,coefficient):
     '''
@@ -134,17 +144,11 @@ def testLinear():
     '''
     dataSet = readingDatas()
     trainData,testData = randomData(dataSet,0.8) #获取训练数据和测试数据
-    coefficient = trainLinear(trainData,1)
+    coefficient = trainLinear(trainData,0.5)
     print(coefficient)
 
 
 
 if __name__ == "__main__":
     testLinear()
-
-
-
-
-
-
 
