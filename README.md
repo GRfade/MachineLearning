@@ -9,6 +9,7 @@
 算法：
 * Kmeans算法
 * KNN算法
+* Linear Regression算法
 * Logistic Regression算法
 * Softmax Regression算法
 * BP神经网络算法
