@@ -122,21 +122,52 @@ def trainLinear(trainData,rate):
 
 
 def costFunction(trainData,coefficient):
+    '''
+    实现代价函数，作为迭代标准
+    :param trainData:
+    :param coefficient:
+    :return:
+    '''
     cost = 0
     for data in trainData:
         cost += np.square(hypothesisFunction(data, coefficient) - data[-1])
     cost = cost / (len(trainData)*2)
     return cost
 
-def Testlinea(testData,coefficient):
+
+def RSequre(testData,coefficient):
     '''
-    测试算法，利用迭代得到的回归系数，进行测试，并绘制图像
+    利用R平方进行测试线性回归算法的拟合度
+    R平方值=回归平方和(ssreg)/总平方和(sstotal)
     :param testData:
     :param coefficient:
     :return:
     '''
-    print(Testlinea)
+    average = 0.0
+    ssreg = 0.0
+    ssres = 0.0
+    sstotal = 0.0
+    length = len(testData)
+    for data in testData: #计算出均值
+        average += data[-1]/length
+    for data in testData:
+        ssreg += np.square(hypothesisFunction(data,coefficient) - average)
+        ssres += np.square(hypothesisFunction(data,coefficient) - data[-1])
+        sstotal += np.square(data[-1] - average)
+    result =1 -  ssreg / sstotal
+    return result
 
+
+def function():
+    sns.set(style="ticks")
+
+    # Load the example dataset for Anscombe's quartet
+    df = sns.load_dataset("anscombe")
+
+    # Show the results of a linear regression within each dataset
+    sns.lmplot(x="x", y="y", col="dataset", hue="dataset", data=df,
+               col_wrap=2, ci=None, palette="muted", height=4,
+               scatter_kws={"s": 50, "alpha": 1})
 
 def testLinear():
     '''
@@ -146,6 +177,8 @@ def testLinear():
     trainData,testData = randomData(dataSet,0.8) #获取训练数据和测试数据
     coefficient = trainLinear(trainData,0.5)
     print(coefficient)
+    result = RSequre(testData, coefficient)
+    print('R平方值为：',result)
 
 
 
