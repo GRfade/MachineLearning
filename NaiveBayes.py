@@ -8,11 +8,6 @@ from scipy.io import arff #方便导入arff文件数据
 import sys #用于表示最大值和最小值
 
 
-'''
-该算法为朴素贝叶斯算法
-数据来源：iris.arff 鸢尾属植物的各项数据
-数据内容包括：sepal length(萼片长)、sepal width(萼片宽)、 petal length(花瓣长度)、petal width(花瓣宽度)、 
-'''
 
 '''
 该算法为朴素贝叶斯算法 因为数据全为离散数据 故假设其符合多项式分布
@@ -115,7 +110,10 @@ def conditionProbability(data,list):
                     if d[4] == demo[num]:
                         sum += 1
                         if d[index] == property: count += 1
-                conditionProbabilityList[num][index].append(count / sum )
+                if sum != 0:
+                    conditionProbabilityList[num][index].append(count / sum )
+                else :
+                    conditionProbabilityList[num][index].append(0)
     return conditionProbabilityList
 
 def calculate(data,probabilityList,conditionProbabilityList,list,result):
@@ -131,7 +129,8 @@ def calculate(data,probabilityList,conditionProbabilityList,list,result):
             rate = rate * conditionProbabilityList[result][i][list[i].index(property)]
             total = total * probabilityList[i][list[i].index(property)]
     rate = rate * probabilityList[4][list[i].index(property)]
-    rate = rate / total
+
+    rate = (rate+1) / (total + 2) #引入拉普拉斯平滑
     return rate
 
 
@@ -152,14 +151,14 @@ def testNaiveBayes(testData,probabilityList,conditionProbabilityList,list):
         yesRate = calculate(data,probabilityList,conditionProbabilityList,list,0)
         if data[4] == b'yes' and yesRate >= 0.5: rate += 1
     rate = rate / sum
-    print(rate)
+    print('准确率为：',rate)
 
 
 
 def testDemo():
     # print("testDemo")
     dataSet,list =  readingDatas()
-    trainData, testData =  randomData(dataSet,0.5)
+    trainData, testData =  randomData(dataSet,0.2)
     probabilityList = priorProbability(trainData,list)
     conditionProbabilityList = conditionProbability(trainData,list)
     testNaiveBayes(testData,probabilityList,conditionProbabilityList,list)
