@@ -65,16 +65,20 @@ def picture(dataSet):
     ax4 = plt.subplot(2, 2, 4)
     plt.sca(ax1)
     plt.xlabel('sepal length', fontsize=15, color='r')
-    plt.scatter(array[:,0], array[:,-1],alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
+    plt.ylabel('class', fontsize=15, color='r')
+    plt.scatter(array[:,1], array[:,-1],alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
     plt.sca(ax2)
     plt.xlabel('sepal width', fontsize=15, color='r')
-    plt.scatter(array[:,1], array[:,-1],alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
+    plt.ylabel('class', fontsize=15, color='r')
+    plt.scatter(array[:,2], array[:,-1],alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
     plt.sca(ax3)
     plt.xlabel('petal length', fontsize=15, color='r')
-    plt.scatter(array[:,2], array[:, -1], alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
+    plt.ylabel('class', fontsize=15, color='r')
+    plt.scatter(array[:,3], array[:, -1], alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
     plt.sca(ax4)
     plt.xlabel('petal width', fontsize=15, color='r')
-    plt.scatter(array[:,3], array[:, -1], alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
+    plt.ylabel('class', fontsize=15, color='r')
+    plt.scatter(array[:,4], array[:, -1], alpha=0.6)  # 绘制散点图，透明度为0.6（这样颜色浅一点，比较好看）
     plt.show()
 
 def decisionBoundary(data,coefficient):
@@ -153,14 +157,18 @@ def  gradientDescent(trainData,rate,coefficient):
 
 
 def classify(trainData,rate):
-
+    '''
+    分类器
+    :param trainData:
+    :param rate:
+    :return:
+    '''
     coefficient = [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]]
     oldCost = 0.0
     i = 1
     newCost = costFunction(trainData, coefficient)
     while abs(oldCost - newCost) > 0.00001:
         coefficient = gradientDescent(trainData, rate, coefficient)
-
         oldCost = newCost
         newCost = costFunction(trainData, coefficient)
         print('第', i, '次迭代：')
@@ -188,10 +196,10 @@ def testSoftmaxRegression(testData,coefficient):
 def testDemo():
     dataSet = readingDatas()
     trainData,testData = randomData(dataSet, 0.8)
-    # picture(dataSet)
-    coefficient = classify(trainData, 0.3)
-    rata = testSoftmaxRegression(testData,coefficient)
-    print('Softmax算法准确率为：',rata)
+    picture(dataSet)
+    # coefficient = classify(trainData, 1)
+    # rata = testSoftmaxRegression(testData,coefficient)
+    # print('Softmax算法准确率为：',rata)
 
 if __name__ == "__main__":
     testDemo()
