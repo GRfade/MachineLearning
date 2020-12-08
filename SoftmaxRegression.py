@@ -197,9 +197,9 @@ def testDemo():
     dataSet = readingDatas()
     trainData,testData = randomData(dataSet, 0.8)
     picture(dataSet)
-    # coefficient = classify(trainData, 1)
-    # rata = testSoftmaxRegression(testData,coefficient)
-    # print('Softmax算法准确率为：',rata)
+    coefficient = classify(trainData, 1)
+    rata = testSoftmaxRegression(testData,coefficient)
+    print('Softmax算法准确率为：',rata)
 
 if __name__ == "__main__":
     testDemo()
