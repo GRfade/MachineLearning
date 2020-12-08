@@ -16,6 +16,10 @@ import sys #用于表示最大值和最小值
 petal length(花瓣长度)、petal width(花瓣宽度)、class（种类）共三类
 
 数据特征前四项为鸢尾属植物的特征为连续值，最后一项为植物标签，即所属类别为离散值
+
+构建一个具有1个隐藏层的神经网络，隐层的大小为3
+输入层为4个特征，输出层为3个分类
+(1,0,0)为第一类，(0,1,0)为第二类，(0,0,1)为第三类
 '''
 
 
@@ -35,3 +39,49 @@ def readingDatas():
     # print(dataSet)
     # print(len(dataSet))
     return dataSet
+
+def randomData(dataSet,rate):
+    '''
+    随机划分数据集为训练集和测试集
+    :param dataSet:
+    :param rate:
+    :return:
+    '''
+    dataSetDemo = dataSet[:] #将数据存入另一个列表防止列表修改
+    num = len(dataSetDemo)
+    trainNum = int(rate*num)
+    np.random.shuffle(dataSetDemo) #将列表随机乱序
+    trainData = dataSetDemo[0:trainNum] #随机选取rate的数据成为分类数据
+    testData = dataSetDemo[trainNum:num] #剩下的为测试数据
+    return trainData,testData
+
+
+def layerOutput(parameter,input):
+    '''
+    每一层的输出，结果为向量
+    :param parameter:
+    :param input:
+    :return:
+    '''
+
+    return 0
+
+def hypothesisFunction(data,parameter):
+    '''
+    假设函数的输出，结果为K维向量
+    :param data:
+    :param parameter:
+    :return:
+    '''
+    result = 0
+    return result
+def testDemo():
+    dataSet = readingDatas()
+    trainData,testData = randomData(dataSet, 0.8)
+    parameter = [[[1,1,1,1],[1,1,1,1],[1,1,1,1]],[[1,1,1,1],[1,1,1,1],[1,1,1,1]]]#构建神经网络参数初始值
+    print(len(trainData))
+    print(len(testData))
+
+
+if __name__ == "__main__":
+    testDemo()
