@@ -188,10 +188,13 @@ def nn_model(X, Y, n_h, n_input, n_output, num_iterations=10000, print_cost=Fals
     for i in range(0, num_iterations):
         # 2.前向传播
         a2, cache = forward_propagation(X, parameters)
+
         # 3.计算代价函数
         cost = compute_cost(a2, Y)
+
         # 4.反向传播
         grads = backward_propagation(parameters, cache, X, Y)
+
         # 5.更新参数
         parameters = update_parameters(parameters, grads)
 
@@ -228,15 +231,20 @@ def predict(parameters, x_test, y_test):
             else:
                 output[i][j] = 0
 
-    print('预测结果：', output)
-    print('真实结果：', y_test)
+    print('预测结果：')
+    for out in output:
+        print(out)
+
+    print('真实结果：')
+    for test in y_test:
+        print(test)
 
     count = 0
     for k in range(0, n_cols):
         if output[0][k] == y_test[0][k] and output[1][k] == y_test[1][k] and output[2][k] == y_test[2][k]:
             count = count + 1
-        else:
-            print('错误分类样本的序号：', k + 1)
+        # else:
+        #     print('错误分类样本的序号：', k + 1)
 
     acc = count / int(y_test.shape[1]) * 100
     print('准确率：%.2f%%' % acc)
