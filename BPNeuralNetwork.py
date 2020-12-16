@@ -75,6 +75,8 @@ def hypothesisFunction(data,parameter):
     '''
     result = 0
     return result
+
+
 def testDemo():
     dataSet = readingDatas()
     trainData,testData = randomData(dataSet, 0.8)
