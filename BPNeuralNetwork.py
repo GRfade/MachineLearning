@@ -60,25 +60,7 @@ def randomData(dataSet,rate):
     return trainData,testData
 
 
-# def layerOutput(parameter,input):
-#     '''
-#     每一层的输出，结果为向量
-#     :param parameter:
-#     :param input:
-#     :return:
-#     '''
-#
-#     return 0
 
-# def hypothesisFunction(data,parameter):
-#     '''
-#     假设函数的输出，结果为K维向量
-#     :param data:
-#     :param parameter:
-#     :return:
-#     '''
-#     result = 0
-#     return result
 
 
 
