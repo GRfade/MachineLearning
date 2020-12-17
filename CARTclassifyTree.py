@@ -12,36 +12,29 @@ import datetime
 
 '''
 该算法为CART分类算法
-数据来源：iris.arff 鸢尾属植物的各项数据
+数据来源：weather.nominal.arff
 
-数据内容包括：sepal length (花萼长度)、sepal width(花萼宽度)、
-petal length(花瓣长度)、petal width(花瓣宽度)、class（种类）共三类
-
-数据特征前四项为鸢尾属植物的特征为连续值，最后一项为植物标签，即所属类别为离散值
 
 
 '''
 
 def readingDatas():
     '''
-    获取鸢尾属植物数据源
+    读入数据，并修改数据，添加一列数据且值恒为1，同时将最后一列枚举数据转换为0、1
     :return:
     '''
-    array = arff.loadarff("./Dataset/iris.arff")
+    array = arff.loadarff("./Dataset/weather.nominal.arff")
     df = pd.DataFrame(array[0])
-    df.columns = ["sepallength","sepalwidth","petallength","petalwidth","class"]
-    df = df.replace(b'Iris-setosa', '1 0 0')
-    df = df.replace(b'Iris-versicolor', '0 1 0')
-    df = df.replace(b'Iris-virginica', '0 0 1')
-    df['class1'] = df['class'].map(lambda x:x.split(' ')[0])
-    df['class2'] = df['class'].map(lambda x:x.split(' ')[1])
-    df['class3'] = df['class'].map(lambda x:x.split(' ')[2])
-    df = df.drop(['class'], axis=1)  # 删除Sex列
+    list = []
+    list.append(df["outlook"].unique().tolist())
+    list.append(df["temperature"].unique().tolist())
+    list.append(df["humidity"].unique().tolist())
+    list.append(df["windy"].unique().tolist())
+    list.append(df["play"].unique().tolist())
     data_array = np.array(df)
     dataSet = data_array.tolist()
-    # print(dataSet)
-    # print(len(dataSet))
-    return dataSet
+    return dataSet,list
+
 
 
 def randomData(dataSet,rate):
@@ -60,11 +53,19 @@ def randomData(dataSet,rate):
     return trainData,testData
 
 
+
+
+
+
+
+
 def testDemo():
     print('test')
-    dataSet = readingDatas()
+    dataSet,list = readingDatas()
     trainingData,testData = randomData(dataSet, 0.8)
     print(testData)
+    print(list)
+
 
 
 
