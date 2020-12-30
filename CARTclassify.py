@@ -3,6 +3,9 @@
 from random import seed  # 初始化随机数发生器的种子值
 from random import randrange  # 指定区间随机不重复抽取整数
 from csv import reader  # 读取CSV文件
+import numpy as np #矩阵运算库
+import pandas as pd #提供高性能易用数据类型和分析工具
+from scipy.io import arff #方便导入arff文件数据
 
 '''
 该算法为BP神经网络算法
@@ -249,26 +252,32 @@ def split(node, max_depth, min_size, depth):
     # 如果是，不再分裂，直接返回
     if not left or not right:
         node['left'] = node['right'] = to_terminal(left + right)
+        # print('当前节点为叶子节点')
         return
 
     # (2)check for max depth 若已为最大深度，后续两个子结点直接作为叶子结点
     if depth >= max_depth:
         node['left'], node['right'] = to_terminal(left), to_terminal(right)  # 得到预测类别。
+        # print('创建两个叶子节点')
         return
 
     # (3)process left child
     if len(left) <= min_size:
         node['left'] = to_terminal(left)
+        # print('左节点为叶子节点')
     else:
         node['left'] = get_split(left)
         split(node['left'], max_depth, min_size, depth + 1)
+        # print('创建左节点')
 
     # (4)process right child
     if len(right) <= min_size:
         node['right'] = to_terminal(right)
+        # print('右节点为叶子节点')
     else:
         node['right'] = get_split(right)
         split(node['right'], max_depth, min_size, depth + 1)
+        # print('创建右节点')
 
 
 
@@ -335,6 +344,21 @@ def decision_tree(train, test, max_depth, min_size):
     return (predictions)  # 关于测试集的预测结果
 
 
+
+def readingDatas():
+    '''
+    读入数据，并修改数据，添加一列数据且值恒为1，同时将最后一列枚举数据转换为0、1
+    :return:
+    '''
+    array = arff.loadarff("./Dataset/diabetes.arff")
+    df = pd.DataFrame(array[0])
+    df.insert(0, 'constant', 1)  # 添加constant列 值恒为1
+    df = df.replace(b'tested_negative', 0)
+    df = df.replace(b'tested_positive', 1)
+    data_array = np.array(df)
+    dataSet = data_array.tolist()
+    return dataSet
+
 if __name__ == '__main__':
     seed(1)
     # 输入数据
@@ -349,9 +373,22 @@ if __name__ == '__main__':
     max_depth = 5
     min_size = 10
 
-    scores = evaluate_algorithm(dataset, decision_tree, n_folds, max_depth, min_size)
 
-    print('Scores: %s' % scores)
-    print('平均准确率为: %.3f%%' % (sum(scores) / float(len(scores))))
+    dataSet = readingDatas()
+
+
+    print('diabetes.arff数据集：')
+    scores2 = evaluate_algorithm(dataSet, decision_tree, n_folds, max_depth, min_size)
+    print('Scores: %s' % scores2)
+    print('平均准确率为: %.3f%%' % (sum(scores2) / float(len(scores2))))
+
+
+    print('data_banknote_authentication数据集：')
+    scores1 = evaluate_algorithm(dataset, decision_tree, n_folds, max_depth, min_size)
+    print('Scores: %s' % scores1)
+    print('平均准确率为: %.3f%%' % (sum(scores1) / float(len(scores1))))
+
+
+
 
 
