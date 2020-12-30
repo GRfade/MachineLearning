@@ -8,8 +8,13 @@ import pandas as pd #提供高性能易用数据类型和分析工具
 from scipy.io import arff #方便导入arff文件数据
 
 '''
-该算法为BP神经网络算法
-数据来源：data_banknote_authentication.csv(钞票数据集)
+该算法为CART分类算法
+
+数据1来源：diabetes.arff 糖尿病人的各项数据
+数据内容包括：preg（怀孕次数）、plas（葡萄糖浓度）、pres（血压）、skin（皮肤厚度）、insu（胰岛素）、mass（体重）、 pedi（谱系功能）、 age（年龄）、 class(是否为糖尿病人)
+前8列为糖尿病人特征特征、最后一列为是否患有糖尿病
+
+数据2来源：data_banknote_authentication.csv(钞票数据集)
 这是从纸币鉴别过程中的图像里提取的数据，用来预测钞票的真伪的数据集
 第一列：图像经小波变换后的方差(variance)(连续值)；
 第二列：图像经小波变换后的偏态(skewness)(连续值)；
