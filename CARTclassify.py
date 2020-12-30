@@ -24,6 +24,22 @@ from scipy.io import arff #方便导入arff文件数据
 '''
 
 
+def readingDatas():
+    '''
+    读入数据，并修改数据，添加一列数据且值恒为1，同时将最后一列枚举数据转换为0、1
+    :return:
+    '''
+    array = arff.loadarff("./Dataset/diabetes.arff")
+    df = pd.DataFrame(array[0])
+    df.insert(0, 'constant', 1)  # 添加constant列 值恒为1
+    df = df.replace(b'tested_negative', 0)
+    df = df.replace(b'tested_positive', 1)
+    data_array = np.array(df)
+    dataSet = data_array.tolist()
+    return dataSet
+
+
+
 def load_csv(filename):
     '''
     读取CSV文件返回整体数据集列表
@@ -350,19 +366,8 @@ def decision_tree(train, test, max_depth, min_size):
 
 
 
-def readingDatas():
-    '''
-    读入数据，并修改数据，添加一列数据且值恒为1，同时将最后一列枚举数据转换为0、1
-    :return:
-    '''
-    array = arff.loadarff("./Dataset/diabetes.arff")
-    df = pd.DataFrame(array[0])
-    df.insert(0, 'constant', 1)  # 添加constant列 值恒为1
-    df = df.replace(b'tested_negative', 0)
-    df = df.replace(b'tested_positive', 1)
-    data_array = np.array(df)
-    dataSet = data_array.tolist()
-    return dataSet
+
+
 
 if __name__ == '__main__':
     seed(1)
