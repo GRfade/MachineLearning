@@ -101,21 +101,21 @@ def hypothesisFunction(data,coefficient):
     return result
 
 
-def trainLinear(trainData,rate):
+def trainLinear(trainingData,rate):
     '''
     训练线性回归算法，获得最小代价函数，利用梯度下降算法,进行n轮迭代
-    :param trainDate:测试数据
+    :param trainingData:测试数据
     :param rate:学习率(0~1)
     :return:coefficient 回归系数
     '''
     print("linearRegression")
     coefficient = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]  # 系数列表初始化
     oldCost = 0.0
-    newCost = costFunction(trainData, coefficient)
+    newCost = costFunction(trainingData, coefficient)
     while abs(oldCost - newCost) > 0.01 : #总迭代次数
-        coefficient = gradientDescent(trainData,rate,coefficient)
+        coefficient = gradientDescent(trainingData,rate,coefficient)
         oldCost = newCost
-        newCost = costFunction(trainData, coefficient)
+        newCost = costFunction(trainingData, coefficient)
         print('代价函数值为：',newCost)
 
     return coefficient
