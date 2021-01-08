@@ -31,7 +31,7 @@ def readingDatas():
     '''
     array = arff.loadarff("./Dataset/diabetes.arff")
     df = pd.DataFrame(array[0])
-    df.insert(0, 'constant', 1)  # 添加constant列 值恒为1
+    # df.insert(0, 'constant', 1)  # 添加constant列 值恒为1
     df = df.replace(b'tested_negative', 0)
     df = df.replace(b'tested_positive', 1)
     data_array = np.array(df)
@@ -371,17 +371,11 @@ def decision_tree(train, test, max_depth, min_size):
 
 if __name__ == '__main__':
     seed(1)
-    # 输入数据
-    filename = './Dataset/data_banknote_authentication.csv'
-    dataset = load_csv(filename)
 
-    #string转换为 float
-    for i in range(len(dataset[0])):
-        str_column_to_float(dataset, i)
     #5折交叉验证
     n_folds = 5
     max_depth = 5
-    min_size = 10
+    min_size = 20
 
 
     dataSet = readingDatas()
@@ -391,6 +385,15 @@ if __name__ == '__main__':
     scores2 = evaluate_algorithm(dataSet, decision_tree, n_folds, max_depth, min_size)
     print('Scores: %s' % scores2)
     print('平均准确率为: %.3f%%' % (sum(scores2) / float(len(scores2))))
+
+
+    # 输入数据
+    filename = './Dataset/data_banknote_authentication.csv'
+    dataset = load_csv(filename)
+
+    #string转换为 float
+    for i in range(len(dataset[0])):
+        str_column_to_float(dataset, i)
 
 
     print('data_banknote_authentication数据集：')
