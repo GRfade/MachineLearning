@@ -82,7 +82,7 @@ def pca(dataSet,k):
     :param k:
     :return:
     '''
-    print('pca')
+
     covariance = covarianceMatrix(zeroMean(dataSet))
     basisVector = eigenValuesVectors(covariance, k)
     data = np.dot(basisVector,dataSet.T).T
@@ -143,11 +143,11 @@ def main():
     dataSet, labelList = readingDatas()
 
     data1 = pca(dataSet, 1)
-    print('PCA算法降维到一维：', data1)
+    print('PCA算法降维到一维：\n', data1)
     pltshow1(data1, labelList)
 
     data2 = pca(dataSet,2)
-    print('PCA算法降维到二维：', data2)
+    print('PCA算法降维到二维：\n', data2)
     pltshow2(data2,labelList)
 
 
