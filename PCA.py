@@ -88,26 +88,6 @@ def pca(dataSet,k):
     data = np.dot(basisVector,dataSet.T).T
     return data
 
-def pltshow2(data,labelList):
-    '''
-    降维后数据展示，展示降维到二维时的状态
-    :return:
-    '''
-
-    # dataList = list(zip(data, lableList))
-
-    colors = labelList
-    colors[colors == b'tested_positive'] = 'r'
-    colors[colors == b'tested_negative'] = 'b'
-    # print(colors)
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-    ax1.set_title('Scatter Plot')
-    ax1.scatter(data.T[0],data.T[1], c=colors, marker='o')
-
-    plt.show()
-
-
 def pltshow1(data,labelList):
     '''
     降维后数据展示，展示降维到二维时的状态
@@ -134,6 +114,27 @@ def pltshow1(data,labelList):
     ax1.scatter(data.T[0], temp, c=colors, marker='o')
 
     plt.show()
+
+
+def pltshow2(data,labelList):
+    '''
+    降维后数据展示，展示降维到二维时的状态
+    :return:
+    '''
+
+    # dataList = list(zip(data, lableList))
+
+    colors = labelList
+    colors[colors == b'tested_positive'] = 'r'
+    colors[colors == b'tested_negative'] = 'b'
+    # print(colors)
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax1.set_title('Scatter Plot')
+    ax1.scatter(data.T[0],data.T[1], c=colors, marker='o')
+    plt.show()
+
+
 
 def main():
     '''
