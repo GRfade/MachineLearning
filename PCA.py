@@ -88,7 +88,7 @@ def pca(dataSet,k):
     data = np.dot(basisVector,dataSet.T).T
     return data
 
-def pltshow2(data,lableList):
+def pltshow2(data,labelList):
     '''
     降维后数据展示，展示降维到二维时的状态
     :return:
@@ -96,7 +96,7 @@ def pltshow2(data,lableList):
 
     # dataList = list(zip(data, lableList))
 
-    colors = lableList
+    colors = labelList
     colors[colors == b'tested_positive'] = 'r'
     colors[colors == b'tested_negative'] = 'b'
     # print(colors)
@@ -108,7 +108,7 @@ def pltshow2(data,lableList):
     plt.show()
 
 
-def pltshow1(data,lableList):
+def pltshow1(data,labelList):
     '''
     降维后数据展示，展示降维到二维时的状态
     :return:
@@ -116,7 +116,7 @@ def pltshow1(data,lableList):
 
     # dataList = list(zip(data, lableList))
 
-    colors = lableList
+    colors = labelList
     colors[colors == b'tested_positive'] = 'r'
     colors[colors == b'tested_negative'] = 'b'
     # fig = plt.figure()
@@ -139,16 +139,13 @@ def main():
     '''
     测试PCA算法，
     '''
-    dataSet,lableList = readingDatas()
+    dataSet, labelList = readingDatas()
 
     data1 = pca(dataSet, 1)
-    pltshow1(data1, lableList)
+    pltshow1(data1, labelList)
 
     data2 = pca(dataSet,2)
-    pltshow2(data2,lableList)
-
-
-
+    pltshow2(data2,labelList)
 
 
 
